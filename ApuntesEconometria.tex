@@ -1,5 +1,10 @@
 \documentclass[a4paper,11pt]{book}
 \usepackage{enumerate}
+\usepackage{amssymb, amsmath, amsbsy}
+\usepackage{upgreek}
+\usepackage{mathdots}
+\usepackage{mathrsfs} 
+\usepackage{stackrel} 
 \begin{document}
 \title{Apuntes de econometría}
 \author{Iván Marín}
@@ -24,11 +29,29 @@ El presente documento es el resultado de los esfuerzos para proporcionar una gu�
 \chapter{VI y MC2E}
 \chapter{Modelos de ecuaciones simultáneas}
 En el capítulo anterior se mostró que el método VI resulve dos problemas:
+
 \begin{itemize}
 	\item Variables omitidas
 	\item Error de medición
 \end{itemize}
-\section{a ver}
+El promblema que enfrentamos ahora es el de la \textbf{simultaneidad}, esto implica que dos o más variables se determinan conjuntamente.
+Este apartado considera las siguientes secciones:
+\begin{itemize}
+	\item Naturaleza y alcance del MES
+	\item ¿MCO para una ecuación del MES?: SESGO e INCONSISTENCIA
+	\item Identificación y estimación con dos ecuaciones
+	\item Identificación y estimación con más de dos ecuaciones
+	\item Ecuaciones simultáneas con ST
+	\item Ecuaciones simultáneas con DP
+\end{itemize}
+
+\section{Naturaleza y alcance del MES}
+
+Lo más importante cuando trabajamos con un Modelo de Ecuaciones Simultáneas(MES) es recordar que cada ecuación del sistema tiene una interpretación \textit{ceteris paribus}. Por ejemplo, consideremos una función simple de oferta de mano de obra:
+\begin{equation}\label{eq:mh}
+h_{s} = \alpha_{1}w + \beta_{1}z_{1} + u_{1}
+\end{equation}
+
 \chapter{Modelos de variable dependiente limitadas y correciones de selección muestral}
 \chapter{Temas avanzados de ST}
 
