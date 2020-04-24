@@ -11,7 +11,9 @@
 \date{Enero, 2011}
 \maketitle
 \chapter{Introducción}
-El presente documento es el resultado de los esfuerzos para proporcionar una guía que sirva de instrumento revisorio de los elementos expuestos por Wooldrige.
+El presente documento es el resultado de los esfuerzos para proporcionar una guía que sirva de instrumento revisorio de los elementos expuestos por Wooldrige. Este documento no pretende sustituir ningun manual profesional de econometría, su intención es servir como guía al entusiasta de los métodos estadísticos aquí presentados.\\
+
+En este orden de ideas, sirvasé de estos elementos de rápida consulta, invitados a todos los economistas en profundizar en las herramientas estadísticas, el esfuerzo tendrá un retorno sustancial en el largo plazo.
 
 \chapter{Modelo de regresión simple}
 \chapter{Modelo de regresión simple}
@@ -27,6 +29,77 @@ El presente documento es el resultado de los esfuerzos para proporcionar una gu�
 \chapter{Combinación de CT en ST: DP}
 \chapter{Métodos avazados para DP}
 \chapter{VI y MC2E}
+En los capítulos anteriores se demostró que existe sesgo en caso de omitir alguna variable relevante y que aplicar MCO, en este escenario, genera estimadores inconsistentes. Entre las principales sugerencias para solucionar este problema es el uso de \textit{proxies}, ahora exponemos un método que deja la variable inobservable en el error, pero en lugar de MCO, considera un método de estimación que \textbf{reconoce la presencia de la variable omitida}: método de variables instrumentales(VI).\\
+
+Se aborda el problema de variables explicativas endógenas y su solución a través de método VI, también se exponen sus atributos cuando existe un error en la variables, así como su uso en ST.\\
+
+Este apartado considera las siguientes secciones:
+\begin{itemize}
+	\item Justificación
+	\item Estimación VI en modelo múltiple
+	\item MC2E
+	\item Soluciones VI a errores en variables
+	\item Pruebas de endogeneidad y pruebas de restricciones de sobre identificación
+	\item MC2E con heterocedasticidad
+	\item MC2E DT y CT combinados
+\end{itemize}
+\section{Justificación}
+
+Partimos del ejemplo de la capacidad inobservable en la ecuación de salario para adultos (Wooldrigde,2016) :
+
+\begin{equation}
+\notag log(wage) = \beta_{0} + \beta_{1}educ + \beta_{2}abil + e
+\end{equation}
+
+donde $e$ es el error y $abil$ es la capacidad observada . Bajo los supuestos adecuados, una variable proxy como IQ puede sustituir la capacidad, pero no contamos con tal proxy. Debido a lo anterior, supongamos que se incluye la variable IQ en el término error.
+\begin{equation}
+\label{eq:uno}
+log(wage) = \beta_{0} + \beta_{1}educ + u
+\end{equation}
+
+Si~\ref{eq:uno} se estimó por MCO entonces los estimadores son sesgados e inconsistentes, si $educ$ y $abil$ están correlacionadas.\\
+
+El método VI aún puede solucionar~\ref{eq:uno} siempre y cuando se encuentre un \textbf{instrumento} adecuado para $educ$. Considere el siguiente modelo:\\
+
+\begin{equation}
+\label{eq:dos}
+y = \beta_{0} + \beta_{1}x + u
+\end{equation}
+
+En este modelo suponemos que:
+
+\begin{equation}
+\label{eq:tres}
+Cov(x,u) \not = 0
+\end{equation}
+
+Cuando $x$ y $u$ están correlacionadas se necesitará información adicional para general estimadores consistentes e insesgados. Esta información proviene de un \textbf{instrumento} que cumple con los siguientes supuestos:\\
+
+No está correlacionado con $u$ (\textbf{Condición de exogeneidad}):
+\begin{equation}
+\label{eq:cuatro}
+Cov(z,u) = 0
+\end{equation}
+
+Está correlacionado con $x$ (\textbf{Condición de relevancia}):
+\begin{equation}
+\label{eq:cinco}
+Cov(z,x) \not = 0
+\end{equation}
+
+La primera condición significa que $z$ no tiene efectos parciales sobre $y$, la segunda condición pone de manifiesto que el instrumento debe estar relacionada con la variable explicativa endógena $x$.
+
+Respecto a las condiciones, la primera usualmente no se espera demostrar. Para probar la segunda condición empleamos una regresión entre $x$ y $z$. Es decir
+\begin{equation}
+\label{eq:seis}
+x = \pi_{0} + \pi_{1}z + v
+\end{equation}
+
+Debido a que $\pi_{1} = Cov(z,x) / Var(z)$,el supuesto~\ref{eq:cinco} se mantiene si, y sólo si, $\pi_{1} \not = 0$
+
+
+
+
 \chapter{Modelos de ecuaciones simultáneas}
 En el capítulo anterior se mostró que el método VI resulve dos problemas:
 
@@ -39,18 +112,79 @@ Este apartado considera las siguientes secciones:
 \begin{itemize}
 	\item Naturaleza y alcance del MES
 	\item ¿MCO para una ecuación del MES?: SESGO e INCONSISTENCIA
-	\item Identificación y estimación con dos ecuaciones
+	\item Identificar y estimar la ecuación estructural
 	\item Identificación y estimación con más de dos ecuaciones
 	\item Ecuaciones simultáneas con ST
 	\item Ecuaciones simultáneas con DP
 \end{itemize}
 
 \section{Naturaleza y alcance del MES}
-
 Lo más importante cuando trabajamos con un Modelo de Ecuaciones Simultáneas(MES) es recordar que cada ecuación del sistema tiene una interpretación \textit{ceteris paribus}. Por ejemplo, consideremos una función simple de oferta de mano de obra:
 \begin{equation}\label{eq:mh}
 h_{s} = \alpha_{1}w + \beta_{1}z_{1} + u_{1}
 \end{equation}
+donde $Z_{1}$ es una variable observable que afecta la mano de obra, $w$ es el salario promedio por empleado y $h_{s}$ es la oferta de mano de obra. La ecuación anterior se denomina \textbf{ecuación estructural}, ya que (i)se fundamenta en la teoría económica y (ii)muestra una relación \textit{causal}.\\
+
+Para complementar el modelo utilizamos la ecuación de demanda de mano de obra:
+\begin{equation}\label{eq:mhs}
+h_{d} = \alpha_{2}w + \beta_{2}z_{2} + u_{2}
+\end{equation}
+donde  $h_{d}$ es la demanda de mano de obra. Wooldrige denomina a las variables $Z_{2}$ como el \textit{desplazador observable} y a $u_{2}$ como el \textit{desplazador inobservable} de la demanda.\\
+
+Por lo tanto en equilibrio se observa que:
+\begin{equation}\label{eq:equi}
+h_{id} = h_{is} 
+\end{equation}
+Al incoporarse la condición de equilibrio con las ecuaciones de oferta y demanda se obtiene el siguiente sistema:
+\begin{equation}\label{eq:mhs2}
+h_{i} = \alpha_{1}w_{i} + \beta_{1}z_{i1} + u_{i1}
+\end{equation}
+\begin{equation}\label{eq:mhw2}
+h_{i} = \alpha_{2}w_{i} + \beta_{1}z_{i2} + u_{i2}
+\end{equation}
+
+\section{¿MCO para una ecuación del MES?: SESGO e INCONSISTENCIA}
+
+El sesgo e inconsistencia generada por el MCO ocurre debido a que una variable explicativa, que esta determinada de forma simultánea con la variable dependiente, está correlacionada con el término aleatorio.
+
+Para exponer el punto anterior, considere el siguiente modelo MES:
+
+\begin{equation}
+y_{1} = \alpha_{1}y_{2} + \beta_{1}z_{1} + u_{1}
+\end{equation}
+
+\begin{equation}
+y_{2} = \alpha_{2}y_{1} + \beta_{2}z_{2} + u_{2}
+\end{equation}
+
+En este sistema $z_{1}$ y $z_{2}$ son \textbf{variables exógenas, por lo que no están correlacionadas con $u_{1}$ y $u_{2}$}. Este sistema nos permitirá mostrar como se correlaciona $y_{2}$ con $u_{1}$, sustituyendo X en XX:
+\begin{equation}
+y_{2} = \alpha_{2}(\alpha_{1}y_{2} + \beta_{1}z_{1} + u_{1}) + \beta_{2}z_{2} + u_{2}
+\end{equation}
+Realizamos el álgebra despejamos para llegar a la siguiente expresión:
+\begin{equation}
+(1-\alpha_{2}\alpha_{1})y_{2} = \alpha_{2}\beta_{1}z_{1} + \beta_{2}z_{2} + \alpha_{2}u_{1} + u_{2}
+\end{equation}
+Para que la ecuación anterior tenga una solución se debe cumplir $\alpha_{2}\alpha_{2} \not= 1 $. Por lo general, suponemos un efecto mixto(CORROBORAR CON OWEN), es decir, $\alpha_{1} \geq 0$ y  $\alpha_{2} \leq 0$, con esto podríamos suponer que $\alpha_{1}\alpha_{2} \leq 0$. 
+Si la condición anterior se mantiene, entonces podemos multiplicar la expresión anterior por $1/(1-\alpha_{2}\alpha_{1})$, por lo que reescribimos la expresión anterior por:
+\begin{equation}
+y_{2} = \pi_{21}z_{1} + \pi_{22}z_{2} + v_{2}
+\end{equation}
+donde $\pi_{21} = (\alpha_{2}\beta_{1})/(1-\alpha_{2}\alpha_{1})$,$\pi_{22} = (\beta_{2})/(1-\alpha_{2}\alpha_{1})$ y $v_{2} = (\alpha_{2}u_{1} + u_{2})/(1-\alpha_{2}\alpha_{1})$ . La ecuación anterior es la conocida \textbf{forma reducida} de $y_{2}$. Note que los \textbf{parámetros de la forma reducida} son funciones no lineales de los parámetros de la forma estructural.
+
+El \textbf{error de la forma reducida},$v_{2}$ es una función lineal de los errores de la forma estructural, por construcción, $z_{1}$ y $z_{2}$ no están correlacionadas con los términos aleatorios, $u_{1}$ y $u_{2}$, por lo tanto $v_{2}$ tampoco estará correlacionada con  $z_{1}$ y $z_{2}$. Por estas razón, podemos emplear MCO, en dos etapas, para estimar de forma consistente $\pi_{21}$ y $\pi_{22}$
+
+La ecuación (10) nos permite mostrar que, \textbf{salvo supuestos especiales}, la ecuación (10) genera \textbf{estimadores incosistentes y sesgados} en caso de utilizar MCO.  
+
+\section{Identificar y estimar la ecuación estructural}
+
+Hasta ahora sabemos que utilizar MCO sobre una ecuación estructural de un MES da como resultado  \textbf{estimadores sesgados e inconsistentes}. Para solucionar este problema se emplea Mínimó Cuadrados en 2 Etapas (MC2E).
+
+La mecánica de MC2E es similar a la expuesta en el capítulo 14. Sin embargo, debemos destacar el hecho que, debido a que se especifica una ecuación estructural para cada variable endógena, se puede observar si existen suficientes VI para estimar cualquier ecuación. A continuación abordamos el \textbf{problema de identificación}\\
+
+\textbf{Identificación en un sistema de dos ecuaciones}\\
+
+Cuando aplicamos MCO, la condición clave de identificación es que ninguna variables explicativa esté correlacionada con el término error, en la sección anterior demostramos que esto ya no aplica para los MES. Pese a lo anterior, si existen instrumentos, aún se pueden pueden identificar los paŕametros en una ecuación de un MES, así como las variables omitidas y el error de medición.\\
 
 \chapter{Modelos de variable dependiente limitadas y correciones de selección muestral}
 \chapter{Temas avanzados de ST}
