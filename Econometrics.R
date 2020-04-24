@@ -25,3 +25,7 @@ prop.table(table(marriage))
 
 # Proporciones de la tabla de contingencia
 prop.table(countstab,margin = 2) * 100
+pie(table(marriage),
+    col=gray(seq(.2,1,.2)))
+
+barplot(table(marriage),horiz = TRUE, las = 1)
