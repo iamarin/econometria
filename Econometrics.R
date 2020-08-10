@@ -1,5 +1,5 @@
 # Econometria
-# @elvagodeldato
+# @elcontrafactual
 
 affairs <- read.dta('http://fmwww.bc.edu/ec-p/data/wooldridge/affairs.dta')
 
